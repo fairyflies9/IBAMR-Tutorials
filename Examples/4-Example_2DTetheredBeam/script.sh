@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=ibamr-rubberband
+#SBATCH --job-name=ibamr-leaf
 #SBATCH --ntasks-per-node=16
 #SBATCH --time=2:00:00
 #SBATCH --mem=1000
