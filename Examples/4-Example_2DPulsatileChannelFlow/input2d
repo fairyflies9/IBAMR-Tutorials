@@ -1,10 +1,10 @@
 // constants
 PI = 3.14159265358979
 // physical parameters
-L = 1.0                                   // length of the computational (fluid) domain (m)
-MU = 4.0                               // fluid dynamic viscosity (N s / m^2)
+L = 5.0                                   // length of the computational (fluid) domain (m)
+MU = 1.0e2                               // fluid dynamic viscosity (N s / m^2)
 RHO = 1000                                // fluid mass density (kg / m^3)
-V = 0.1										//velocity of background flow
+V = 0.1						//velocity of background flow
 //
 // grid spacing parameters
 MAX_LEVELS = 4                            // maximum number of levels in locally refined grid
@@ -46,39 +46,45 @@ VelocityInitialConditions {                //
    function_1 = "0.0"                     // initial  conditions for the y-component of the velocity
 } //
 //
-VelocityBcCoefs_0 {                       // boundary conditions for the x-component of the velocity
-   acoef_function_0 = "1.0"                //
-   acoef_function_1 = "1.0"                //
-   acoef_function_2 = "1.0"                //
-   acoef_function_3 = "1.0"                //
-//
-   bcoef_function_0 = "0.0"                //
-   bcoef_function_1 = "0.0"                //
-   bcoef_function_2 = "0.0"                //
-   bcoef_function_3 = "0.0"                //
-//
-   gcoef_function_0 = "0.1*tanh(2*t)"                //
-   gcoef_function_1 = "0.1*tanh(2*t)"                //
-   gcoef_function_2 = "0.1*tanh(2*t)"                //
-   gcoef_function_3 = "0.1*tanh(2*t)"                //
+VelocityBcCoefs_0 { //
+   PI = 3.141592653589793 //  PI-constant
+   f = 5 //                   Frequency of pulsation 
+   d = 1.0 //                 Diameter of Channel
+   Y_high = 0.5*d //          Higher y-value of channel [d/2]
+   Y_low = -0.5*d //          Lower y-value of channel  [-d/2]
+   //
+   acoef_function_0 = "1.0" //
+   acoef_function_1 = "1.0" //
+   acoef_function_2 = "1.0" //
+   acoef_function_3 = "1.0" //
+   //
+   bcoef_function_0 = "0.0" //
+   bcoef_function_1 = "0.0" //
+   bcoef_function_2 = "0.0" //
+   bcoef_function_3 = "0.0" //
+   //
+   gcoef_function_0 = "if( X_1 <= -0.5*d,0.0,if( X_1 >= 0.5*d,0.0,4.0/(d*d)*(0.5 + 0.5*sin(2*PI*f*t))*( (0.25*d*d) - X_1*X_1 ) ) )" //
+   gcoef_function_1 = "if( X_1 <= -0.5*d,0.0,if( X_1 >= 0.5*d,0.0,4.0/(d*d)*(0.5 + 0.5*sin(2*PI*f*t))*( (0.25*d*d) - X_1*X_1 ) ) )" //
+   gcoef_function_2 = "0.0" //
+   gcoef_function_3 = "0.0" //
 } //
 //
-VelocityBcCoefs_1 {                       // boundary conditions for the y-component of the velocity
-   acoef_function_0 = "1.0"                //
-   acoef_function_1 = "1.0"                //
-   acoef_function_2 = "1.0"                //
-   acoef_function_3 = "1.0"                //
-//
-   bcoef_function_0 = "0.0"                //
-   bcoef_function_1 = "0.0"                //
-   bcoef_function_2 = "0.0"                //
-   bcoef_function_3 = "0.0"                //
-//
-   gcoef_function_0 = "0.0"                //
-   gcoef_function_1 = "0.0"                //
-   gcoef_function_2 = "0.0"                //
-   gcoef_function_3 = "0.0"                //
-   }//
+VelocityBcCoefs_1 { //
+   acoef_function_0 = "1.0" //
+   acoef_function_1 = "1.0" //
+   acoef_function_2 = "1.0" //
+   acoef_function_3 = "1.0" //
+   //
+   bcoef_function_0 = "0.0" //
+   bcoef_function_1 = "0.0" //
+   bcoef_function_2 = "0.0" // 
+   bcoef_function_3 = "0.0" //
+   //
+   gcoef_function_0 = "0.0" //
+   gcoef_function_1 = "0.0" //
+   gcoef_function_2 = "0.0" //
+   gcoef_function_3 = "0.0" //
+} //
    
 IBHierarchyIntegrator {
    start_time          = START_TIME
@@ -99,8 +105,8 @@ IBMethod {
 
 IBStandardInitializer {                //
    max_levels = MAX_LEVELS                //
-   structure_names = "leaf_512"                //
-   leaf_512 {                //
+   structure_names = "channel"                //
+   channel {                //
       level_number = MAX_LEVELS - 1                //
    } //
 } //
