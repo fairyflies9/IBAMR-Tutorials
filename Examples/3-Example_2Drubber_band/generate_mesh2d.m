@@ -3,7 +3,7 @@ N = 512;                            % number of Cartesian grid meshwidths at the
 dx = L/N;                           % Cartesian mesh width (m)
 
 radius = 0.1;                       % radius of band (m)
-epsilon = 0.005;                    %deformation in the x-direction
+epsilon = 0.02;                    %deformation in the x-direction
 band_length = 2*pi*radius;          % rubber band length (m)
 npts = ceil(2*(band_length/L)*N);   % number of points along the rubber band
 ds = band_length/(npts);            % physical distance between neighboring Lagrangian mesh points (m)
