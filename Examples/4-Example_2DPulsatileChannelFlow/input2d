@@ -7,8 +7,8 @@ RHO = 1000                                // fluid mass density (kg / m^3)
 V = 0.1						//velocity of background flow
 //
 // grid spacing parameters
-MAX_LEVELS = 4                            // maximum number of levels in locally refined grid
-REF_RATIO  = 3                            // refinement ratio between levels
+MAX_LEVELS = 3                            // maximum number of levels in locally refined grid
+REF_RATIO  = 4                            // refinement ratio between levels
 N = 32                                     // actual    number of grid cells on coarsest grid level
 NFINEST = (REF_RATIO^(MAX_LEVELS - 1))*N  // effective number of grid cells on finest   grid level
 DX = (1.0*L)/NFINEST                      // Cartesian mesh width (m)
