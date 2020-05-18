@@ -2,7 +2,6 @@
 #SBATCH --job-name=ibamr-pulsatile
 #SBATCH --ntasks-per-node=16
 #SBATCH --time=2:00:00
-#SBATCH --mem=10000
 #SBATCH --partition=debug_queue
 #SBATCH --output ibamr2d.out
 
