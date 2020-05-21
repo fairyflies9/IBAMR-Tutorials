@@ -88,8 +88,8 @@ target_force_function(
   libMesh::Point s_dump;
     if(time<1)      
 	{
-    s_dump(1)=s(1)+s(0)*sin(2*3.14*0.5*time);
-    s_dump(0)=s(0)*cos(2*3.14*0.5*time);
+    s_dump(1)=s(1)+s(0)*sin(2*3.14*0.25*time);
+    s_dump(0)=s(0)*cos(2*3.14*0.25*time);
 	}
 
     else
