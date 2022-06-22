@@ -2,8 +2,8 @@ L = 1;                              % length of computational domain (m)
 N = 512;                            % number of Cartesian grid meshwidths at the finest level of the AMR grid
 dx = L/N;                           % Cartesian mesh width (m)
 
-center_x = L/2;                     %x-coordinate of the center of the circle.
-center_y = L/2;                     %y-coordinate of the center of the circle.
+center_x = 0;                     %x-coordinate of the center of the circle.
+center_y = 0;                     %y-coordinate of the center of the circle.
 
 radius = 0.1;                       % radius of band (m)
 epsilon = 0.02;                    %deformation in the x-direction
@@ -42,9 +42,9 @@ for s = 1:npts-1
    fprintf(spring_fid, '%d %d %1.16e %1.16e\n', s, s+1, kappa_spring*ds/(ds^2), ds);
 end
 
-if s == npts
-	fprintf(spring_fid, '%d %d %1.16e %1.16e\n', npts, 1, kappa_spring*ds/(ds^2), ds);
-end
+
+fprintf(spring_fid, '%d %d %1.16e %1.16e\n', npts, 1, kappa_spring*ds/(ds^2), ds);
+
 fclose(spring_fid);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
