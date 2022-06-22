@@ -38,12 +38,12 @@ spring_fid = fopen([mesh_name num2str(N) '.spring'], 'w');
 
 fprintf(spring_fid, '%d\n', npts);
 
-for s = 1:npts-1
+for s = 0:npts-2
    fprintf(spring_fid, '%d %d %1.16e %1.16e\n', s, s+1, kappa_spring*ds/(ds^2), ds);
 end
 
 
-fprintf(spring_fid, '%d %d %1.16e %1.16e\n', npts, 1, kappa_spring*ds/(ds^2), ds);
+fprintf(spring_fid, '%d %d %1.16e %1.16e\n', npts-1, 0, kappa_spring*ds/(ds^2), ds);
 
 fclose(spring_fid);
 
