@@ -7,4 +7,4 @@
 #SBATCH --account=lauram9
 #SBATCH --output IBAMR2D.out
 
-mpirun ./main2d input2d
+mpirun ./main3d input3d
