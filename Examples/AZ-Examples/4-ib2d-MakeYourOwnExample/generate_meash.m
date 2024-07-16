@@ -1,0 +1,139 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ultimate goal is for this code to write .vertex, .beam, spring, and
+% .target files
+% Put down dimensions, and calculate dx, ds, and other needed measurements.
+Lx = 1;                              % length of computational domain in the x-direction (m)
+Ly = 2;                             % length of computational domain in the y-direction (m)
+N = 512;                            % number of Cartesian grid meshwidths in the longest direction
+dx = Ly/N;                           % Cartesian mesh width (m)
+ds = Ly/(2*N);                      % ds should be 1/2 of dx
+% Warning, dx = Lx/(N/2) should equal original dx.
+
+% I will have two beams that run horizontally and are Lx/2 in length
+Lb = Lx/2;                          %Length of each beam
+npts_beam = ceil(Lb/ds);                  %total number of vertices in each beam
+npts_total = 2*npts_beam;           %total number of vertices
+
+mesh_name = 'two_beams_';          % structure name
+kappa_target = 2.0e3;               % spring constant (Newton)
+kappa_spring = 2.0e3;               % spring constant (Newton)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Make the .vertex file
+% Command below is going to create / open a file named mesh_name_N.vertex
+vertex_fid = fopen([mesh_name num2str(N) '.vertex'], 'w');
+
+%First line of the file needs to have the total number of vertices
+fprintf(vertex_fid, '%d\n', npts_total);
+
+%write out vertices for lower beam
+for s = 0:npts_beam-1
+   X(1) = Lx/4+s*ds;
+   X(2) = Ly/2-Ly/8;
+   fprintf(vertex_fid, '%1.16e %1.16e\n', X(1), X(2));
+end
+disp(['The vertex ids for the bottom beam go from 1 to ' num2str(npts_beam)]);
+
+%write out vertices for upper beam
+for s = 0:npts_beam-1
+   X(1) = Lx/4+s*ds;
+   X(2) = Ly/2+Ly/8;
+   fprintf(vertex_fid, '%1.16e %1.16e\n', X(1), X(2));
+end
+disp(['The vertex ids for the upper beam go from ' num2str(npts_beam+1) ' to ' num2str(npts_total)]);
+
+fclose(vertex_fid);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Write out the target information
+target_fid = fopen([mesh_name num2str(N) '.target'], 'w');
+
+%determine number of target points on bottom beam
+ntarg_bottom = ceil(npts_beam/4);
+%determine number of target points on the upper beam
+ntarg_upper = ceil(npts_beam/4);
+%calculate the total number of target points
+ntarg_total = ntarg_bottom+ntarg_upper;
+
+%prints out the total number of target points
+fprintf(target_fid, '%d\n', ntarg_total);
+
+%Loop through the bottom beam
+for s = 1:ntarg_bottom
+   fprintf(target_fid, '%d %1.16e\n', s, kappa_target);
+end
+disp(['The target ids for the bottom beam go from 1 to ' num2str(ntarg_bottom)]);
+
+%Loop through the top beam
+for s = npts_beam+1:npts_beam+ntarg_upper
+   fprintf(target_fid, '%d %1.16e\n', s, kappa_target);
+end
+disp(['The target ids for the upper beam go from ' num2str(npts_beam+1) ' to ' num2str(npts_beam+ntarg_upper)]);
+
+fclose(target_fid);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Write out the spring information
+spring_fid = fopen([mesh_name num2str(N) '.spring'], 'w');
+
+%figure out what is the number of springs
+%number of springs on each beam and total number of springs
+nspring_upper = npts_beam-1;
+nspring_lower = npts_beam-1;
+nspring_total = nspring_upper+nspring_lower;
+
+%write the total number of springs as first line in .spring file
+fprintf(spring_fid, '%d\n', nspring_total);
+
+%loop through the lower beam and add springs
+for s = 1:nspring_lower
+   fprintf(spring_fid, '%d %d %1.16e %1.16e\n', s, s+1, kappa_spring*ds/(ds^2), ds);
+end
+disp(['The spring ids for the lower beam go from 1 to ' num2str(nspring_lower)]);
+
+%loop through the upper beam and add springs
+for s= npts_beam+1:npts_beam+nspring_upper
+   fprintf(spring_fid, '%d %d %1.16e %1.16e\n', s, s+1, kappa_spring*ds/(ds^2), ds);
+end
+disp(['The spring ids for the upper beam go from ' num2str(npts_beam+1) ' to ' num2str(npts_beam+nspring_upper)]);
+
+fclose(spring_fid);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Write out the beam information
+beam_fid = fopen([mesh_name num2str(N) '.beam'], 'w');
+kbeam = 0.00001; %beam stiffness
+
+%figure out what is the number of beams
+%number of beams on each beam and total number of beams
+nbeam_upper = npts_beam-2;
+nbeam_lower = npts_beam-2;
+nbeam_total = nbeam_upper+nbeam_lower;
+
+%write the total number of beams as first line in .beam file
+fprintf(beam_fid, '%d\n', nbeam_total);
+
+%loop through the lower beam and add beams
+for s = 1:nbeam_lower
+   fprintf(beam_fid, '%d %d %d %1.16e\n', s, s+1, s+2, kbeam);
+end
+disp(['The beam ids for the lower beam go from 1 to ' num2str(nbeam_lower)]);
+
+%loop through the upper beam and add springs
+for s= npts_beam+1:npts_beam+nbeam_upper
+   fprintf(beam_fid, '%d %d %d %1.16e\n', s, s+1, s+2, kbeam);
+end
+disp(['The beam ids for the upper beam go from ' num2str(npts_beam+1) ' to ' num2str(npts_beam+nbeam_upper)]);
+
+fclose(beam_fid);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
