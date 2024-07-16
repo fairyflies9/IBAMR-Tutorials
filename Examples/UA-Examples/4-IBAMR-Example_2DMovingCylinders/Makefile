@@ -16,8 +16,8 @@ LIBS = $(LIBS) -lnetcdf -lcurl
 # IBAMR_SRC_DIR = /nas/longleaf/apps-dogwood/ibamr/2018-03/sfw/ibamr/IBAMR
 #IBAMR_BUILD_DIR  =/nas/longleaf/apps-dogwood/ibamr/2018-03/sfw/ibamr/ibamr-objs-opt
 #
-IBAMR_SRC_DIR = /contrib/lauram9/ibamr/0.7.1/include/IBAMR
-IBAMR_BUILD_DIR = /contrib/lauram9/ibamr/IBAMR-0.7.1
+IBAMR_SRC_DIR = /groups/lauram9/ib10/ibamr/IBAMR 
+IBAMR_BUILD_DIR = /groups/lauram9/ib10/ibamr/ibamr-objs-opt
 LIBSNEW = $(LIBS) -lnetcdf -lcurl 
 
 ######################################################################

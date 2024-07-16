@@ -1,8 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=ibamr-pulsatile
-#SBATCH --ntasks-per-node=16
-#SBATCH --time=2:00:00
-#SBATCH --partition=debug_queue
-#SBATCH --output ibamr2d.out
+#SBATCH --job-name=IBAMR-test
+#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --time=04:00:00
+#SBATCH --partition=standard
+#SBATCH --account=lauram9
+#SBATCH --output IBAMR2D.out
 
 mpirun ./main2d input2d
