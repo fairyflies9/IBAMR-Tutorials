@@ -1,0 +1,44 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 WHAT DOES THIS EXAMPLE DO: \
+I have a plate move upwards using body force that acts use the reference configuration to update its position. I use target forces move it up to y=.5, then down to y=-.5, and then shut off the body force that I was applying when time>3. The plate still moves due to the local fluid velocity for time>3.\
+\
+\
+\
+To build your mesh as a long plate of roughly two elements thick, use the Matlab command (the order of these points is important):\
+\
+pdepoly([.5 .5 -.5 -.5], [.0156 -.0156 -.0156 .0156],'g');\
+\
+This will open another window with your mesh boundary. Click Mesh > Parameters and change the Maximum Edge Size to roughly 2 or 4 times dx (in this case I used .0312). Hit ok, then Mesh > Initialize Mesh, which should then should the elements of your mesh. Then click Mesh > Export Mesh and click ok for defaults.\
+\
+Once mesh is exported, go back to the Command Window. Use the following command to create the properly formatted .mat file:\
+\
+fid = fopen(\'91IBFE_Mesh2D_128.mat', 'w'); fprintf(fid, '%d %d ', length(p), length(t)); fprintf(fid, '%f %f ', p); fprintf(fid, '%d %d %d %d ', t); fclose(fid);\
+\
+Move the .mat file to the your simulation folder (with the input2d and main.C). Uploading your mesh is done in main.C close to the beginning of the main function call.\
+\
+Mesh mesh(NDIM);\
+const double dx = input_db->getDouble("DX");\
+const double ds = input_db->getDouble("MFAC")*dx;\
+string elem_type = input_db->getString("ELEM_TYPE");\
+mesh.read("IBFE_Mesh2D_128.mat");\
+mesh.prepare_for_use();\
+\
+The applied body force action is set up in the target_force_function present after the include section. Keep in mind \'92s\'92 is the reference configuration and \'91X\'92 is the position of the element.\
+\
+In the section that configures the IBFE solve in main.C, you need to register the force function (this should be close to the PK1Stress function registering, as it is in the example:\
+\
+       IBFEMethod::LagBodyForceFcnData target_force_data(target_force_function);\
+        IBFEMethod::PK1StressFcnData PK1_dev_stress_data(PK1_dev_stress_function);\
+        IBFEMethod::PK1StressFcnData PK1_dil_stress_data(PK1_dil_stress_function);\
+        PK1_dev_stress_data.quad_order = Utility::string_to_enum<libMeshEnums::Order>(input_db->getStringWithDefault("PK1_DEV_QUAD_ORDER","THIRD"));\
+        PK1_dil_stress_data.quad_order = Utility::string_to_enum<libMeshEnums::Order>(input_db->getStringWithDefault("PK1_DIL_QUAD_ORDER","FIRST"));\
+        ib_method_ops->registerPK1StressFunction(PK1_dev_stress_data);\
+        ib_method_ops->registerPK1StressFunction(PK1_dil_stress_data);\
+        ib_method_ops->registerLagBodyForceFunction(target_force_data);\
+        EquationSystems* equation_systems = ib_method_ops->getFEDataManager()->getEquationSystems();\
+}
