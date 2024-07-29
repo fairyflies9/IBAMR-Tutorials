@@ -1,0 +1,24 @@
+Warning in input2d at line 2 column 10 : Illegal character token in input
+
+          ^
+Error in input2d at line 2 column 10 : syntax error
+
+          ^
+P=00000:Program abort called in file ``../../../../SAMRAI-2.4.4/source/toolbox/inputdb/InputManager.C'' at line 172
+P=00000:ERROR MESSAGE: 
+P=00000:InputManager exiting...
+P=00000:
+[r3u08n1:26462] *** Process received signal ***
+[r3u08n1:26462] Signal: Aborted (6)
+[r3u08n1:26462] Signal code:  (-6)
+[r3u08n1:26462] [ 0] /lib64/libpthread.so.0(+0xf630)[0x2ad6aa0e0630]
+[r3u08n1:26462] [ 1] /lib64/libc.so.6(gsignal+0x37)[0x2ad6abc8b387]
+[r3u08n1:26462] [ 2] /lib64/libc.so.6(abort+0x148)[0x2ad6abc8ca78]
+[r3u08n1:26462] [ 3] /xdisk/lauram9/lauram9/1-IBFE-Example_TetherForceFullPlate2D/./main2d[0x485959]
+[r3u08n1:26462] [ 4] /xdisk/lauram9/lauram9/1-IBFE-Example_TetherForceFullPlate2D/./main2d[0xb4061f]
+[r3u08n1:26462] [ 5] /xdisk/lauram9/lauram9/1-IBFE-Example_TetherForceFullPlate2D/./main2d[0x8ee4a9]
+[r3u08n1:26462] [ 6] /xdisk/lauram9/lauram9/1-IBFE-Example_TetherForceFullPlate2D/./main2d[0x48b424]
+[r3u08n1:26462] [ 7] /lib64/libc.so.6(__libc_start_main+0xf5)[0x2ad6abc77555]
+[r3u08n1:26462] [ 8] /xdisk/lauram9/lauram9/1-IBFE-Example_TetherForceFullPlate2D/./main2d[0x49f06f]
+[r3u08n1:26462] *** End of error message ***
+srun: error: r3u08n1: task 0: Aborted (core dumped)

@@ -111,7 +111,7 @@ target_force_function(
 	  s_dump(0)=X(0);
       }
       F = kappa_s*(s_dump-X);		//apply a target force equal to kappa_s times the difference between tether and actual positions.
-}
+
     return;
 }
 
