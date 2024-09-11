@@ -557,8 +557,8 @@ void postprocess_data(Pointer<PatchHierarchy<NDIM> > /*patch_hierarchy*/,
         DofMap& U_dof_map = U_system.get_dof_map();
         std::vector<std::vector<unsigned int> > F_dof_indices(NDIM);
         std::vector<std::vector<unsigned int> > U_dof_indices(NDIM);
-        AutoPtr<FEBase> fe(FEBase::build(dim, F_dof_map.variable_type(0)));
-        AutoPtr<QBase> qrule = QBase::build(QGAUSS, dim, FIFTH);
+        std::unique_ptr<FEBase> fe(FEBase::build(dim, F_dof_map.variable_type(0)));
+        std::unique_ptr<QBase> qrule = QBase::build(QGAUSS, dim, FIFTH);
         fe->attach_quadrature_rule(qrule.get());
         const std::vector<std::vector<double> >& phi = fe->get_phi();
         const std::vector<double>& JxW = fe->get_JxW();
@@ -619,8 +619,8 @@ void postprocess_data(Pointer<PatchHierarchy<NDIM> > /*patch_hierarchy*/,
         U_vec->localize(*U_ghost_vec);
         DofMap& U_dof_map = U_system.get_dof_map();
         std::vector<std::vector<unsigned int> > U_dof_indices(NDIM);
-        AutoPtr<FEBase> fe(FEBase::build(dim, U_dof_map.variable_type(0)));
-        AutoPtr<QBase> qrule = QBase::build(QGAUSS, dim, FIFTH);
+        std::unique_ptr<FEBase> fe(FEBase::build(dim, U_dof_map.variable_type(0)));
+        std::unique_ptr<QBase> qrule = QBase::build(QGAUSS, dim, FIFTH);
         fe->attach_quadrature_rule(qrule.get());
         const std::vector<std::vector<double> >& phi = fe->get_phi();
         const std::vector<double>& JxW = fe->get_JxW();
